@@ -2,23 +2,35 @@ import createError from 'http-errors';
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
-import logger from 'morgan';
+import loggerMorgan from 'morgan';
+import helmet from 'helmet';
+import { API } from './lib/constant';
 
 import indexRouter from './routes/index';
+import userRouter from './modules/user/user.route';
+import connectDB from './lib/database';
 
 const app = express();
+
+(async () => {
+  await connectDB();
+})();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.use(logger('dev'));
+app.use(helmet());
+app.use(loggerMorgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+const BASE_PATH = API.BASE_PATH;
+
+app.use(`${BASE_PATH}/`, indexRouter);
+app.use(`${BASE_PATH}/users`, userRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
