@@ -9,7 +9,7 @@ const router = Router();
  *   name: Users
  *   description: API endpoints for users management
  * definitions:
- *   User:
+ *   RegisterUserDTO:
  *     type: object
  *     properties:
  *       name:
@@ -24,7 +24,7 @@ const router = Router();
 
 /**
  * @swagger
- * /users/register:
+ * /user/register:
  *   post:
  *     summary: Register user
  *     tags: [Users]
@@ -32,16 +32,7 @@ const router = Router();
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *               email:
- *                 type: string
- *               mobileNumber:
- *                 type: string
- *               password:
- *                 type: string
+ *             $ref: '#/definitions/RegisterUserDTO'
  *     responses:
  *       201:
  *         description: Registration Successful

@@ -5,11 +5,12 @@ import cookieParser from 'cookie-parser';
 import loggerMorgan from 'morgan';
 import helmet from 'helmet';
 import { API } from './lib/constant';
-
-import indexRouter from './routes/index';
-import userRouter from './modules/user/user.route';
 import connectDB from './lib/database';
 import { swaggerUi, specs } from './lib/swagger-config';
+
+import indexRouter from './modules';
+import userRouter from './modules/user/user.route';
+import productRouter from './modules/product/product.route';
 
 const app = express();
 
@@ -32,7 +33,8 @@ const BASE_PATH = API.BASE_PATH;
 
 app.use(`${BASE_PATH}/docs`, swaggerUi.serve, swaggerUi.setup(specs));
 app.use(`${BASE_PATH}/`, indexRouter);
-app.use(`${BASE_PATH}/users`, userRouter);
+app.use(`${BASE_PATH}/user`, userRouter);
+app.use(`${BASE_PATH}/product`, productRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -48,11 +48,13 @@ class UserService {
         return Promise.reject(new CustomHttpError(HTTP_CODES.BAD_REQUEST, ERRORS.BAD_REQUEST_ERROR, 'Invalid credentials'));
       }
 
-      const accessToken = await Utils.generateToken({ userId: user.id, name: user.name, email });
+      const userId = user.id;
+
+      const accessToken = await Utils.generateToken({ userId, name: user.name, email });
 
       logger.info(`User login successful ${JSON.stringify({ accessToken, user })}`);
 
-      return Promise.resolve({ accessToken, user });
+      return Promise.resolve({ accessToken, userId });
 
     } catch (error) {
       logger.error(error);
