@@ -11,7 +11,7 @@ class UserService {
 
       const existingUser = await User.findOne().or([ { email }, { mobileNumber } ]);
       if (existingUser) {
-        throw new CustomHttpError(HTTP_CODES.BAD_REQUEST, ERRORS.VALIDATION_ERROR, 'User already exists with the same email or mobile number.');
+        return Promise.reject(new CustomHttpError(HTTP_CODES.BAD_REQUEST, ERRORS.VALIDATION_ERROR, 'User already exists with the same email or mobile number.'));
       }
 
       const newUser = new User({

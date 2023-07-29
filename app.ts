@@ -9,6 +9,7 @@ import { API } from './lib/constant';
 import indexRouter from './routes/index';
 import userRouter from './modules/user/user.route';
 import connectDB from './lib/database';
+import { swaggerUi, specs } from './lib/swagger-config';
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const BASE_PATH = API.BASE_PATH;
 
+app.use(`${BASE_PATH}/docs`, swaggerUi.serve, swaggerUi.setup(specs));
 app.use(`${BASE_PATH}/`, indexRouter);
 app.use(`${BASE_PATH}/users`, userRouter);
 

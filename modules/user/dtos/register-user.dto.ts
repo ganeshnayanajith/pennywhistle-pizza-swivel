@@ -1,4 +1,5 @@
-import { IsString, IsEmail, IsMobilePhone, Length } from 'class-validator';
+import { IsString, IsEmail, Length } from 'class-validator';
+import { IsMobileNumber } from '../../../lib/decorators/is-mobile-number.decorator';
 
 export default class RegisterUserDTO {
   @IsString()
@@ -7,7 +8,7 @@ export default class RegisterUserDTO {
   @IsEmail()
   email: string;
 
-  @IsMobilePhone()
+  @IsMobileNumber()
   mobileNumber: string;
 
   @IsString()
