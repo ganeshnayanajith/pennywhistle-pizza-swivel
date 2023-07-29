@@ -1,23 +1,25 @@
-import { RegisterUserDTO } from './dtos';
-import { validate, ValidationError } from 'class-validator';
-import CustomHttpError from '../../lib/custom-http-error';
-import { ERRORS, HTTP_CODES } from '../../lib/constant';
+import { LoginUserDTO, RegisterUserDTO } from './dtos';
+import DTOValidator from '../../lib/dto-validator';
 
 class UserValidator {
+
   async registerValidation(registerUserDTO: RegisterUserDTO) {
     try {
       const { name, email, mobileNumber, password } = registerUserDTO;
-      const userDTO: RegisterUserDTO = new RegisterUserDTO(name, email, mobileNumber, password);
-      const errors: ValidationError[] = await validate(userDTO);
-      if (errors.length > 0) {
-        const errorObject = errors[0].constraints;
-        // @ts-ignore
-        const firstProperty = Object.keys(errorObject)[0];
-        // @ts-ignore
-        const errorMessage = errorObject[firstProperty];
-        return Promise.reject(new CustomHttpError(HTTP_CODES.BAD_REQUEST, ERRORS.VALIDATION_ERROR, errorMessage));
-      }
-      return Promise.resolve(userDTO);
+      const registerDTO: RegisterUserDTO = new RegisterUserDTO(name, email, mobileNumber, password);
+      await DTOValidator.validateDTO(registerDTO);
+      return Promise.resolve(registerDTO);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
+
+  async loginValidation(loginUserDTO: LoginUserDTO) {
+    try {
+      const { email, password } = loginUserDTO;
+      const loginDTO: LoginUserDTO = new LoginUserDTO(email, password);
+      await DTOValidator.validateDTO(loginDTO);
+      return Promise.resolve(loginDTO);
     } catch (err) {
       return Promise.reject(err);
     }
