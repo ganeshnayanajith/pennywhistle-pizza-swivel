@@ -4,6 +4,7 @@ import { ERRORS, HTTP_CODES } from '../../lib/constant';
 import logger from '../../lib/logger';
 import Utils from '../../lib/utils';
 import { LoginUserDTO, RegisterUserDTO } from './dtos';
+import { Types } from 'mongoose';
 
 class UserService {
   async register(userData: RegisterUserDTO) {
@@ -15,7 +16,10 @@ class UserService {
         return Promise.reject(new CustomHttpError(HTTP_CODES.BAD_REQUEST, ERRORS.VALIDATION_ERROR, 'User already exists with the same email or mobile number.'));
       }
 
+      const userId = new Types.ObjectId();
+
       const newUser = new User({
+        _id: userId,
         name,
         email,
         mobileNumber,
@@ -24,7 +28,7 @@ class UserService {
 
       await newUser.save();
 
-      return Promise.resolve({ message: 'User registered successfully!' });
+      return Promise.resolve({ userId });
 
     } catch (error) {
       logger.error(error);
