@@ -5,9 +5,10 @@ import CustomHttpError from '../../lib/custom-http-error';
 import { HTTP_CODES, ERRORS } from '../../lib/constant';
 import Utils from '../../lib/utils';
 import ProductValidator from './product.validator';
+import { AuthRequest } from '../../lib/security/auth-request';
 
 class ProductController {
-  async createProduct(req: Request, res: Response, next: NextFunction) {
+  async createProduct(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const productData: CreateProductDTO = await ProductValidator.createValidation(req.body);
       const result = await ProductService.createProduct(productData);

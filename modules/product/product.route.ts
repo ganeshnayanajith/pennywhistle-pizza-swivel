@@ -1,5 +1,8 @@
 import { Router } from 'express';
 import ProductController from './product.controller';
+import { authenticator } from '../../lib/security/authenticator';
+import { authorizer } from '../../lib/security/authorizer';
+import { StaffUserRolesEnum } from '../../lib/enum';
 
 const router = Router();
 
@@ -64,7 +67,7 @@ const router = Router();
  *                 error:
  *                  type: null
  */
-router.post('/', ProductController.createProduct);
+router.post('/', authenticator, authorizer([ StaffUserRolesEnum.Admin ]), ProductController.createProduct);
 
 /**
  * @swagger

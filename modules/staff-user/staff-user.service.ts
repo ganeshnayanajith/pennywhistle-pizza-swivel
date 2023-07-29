@@ -3,7 +3,7 @@ import { ERRORS, HTTP_CODES } from '../../lib/constant';
 import logger from '../../lib/logger';
 import Utils from '../../lib/utils';
 import { LoginStaffUserDTO } from './dtos';
-import { StaffUser } from './staff-user.model';
+import { IStaffUser, StaffUser } from './staff-user.model';
 
 class StaffUserService {
 
@@ -27,6 +27,22 @@ class StaffUserService {
 
       return Promise.resolve({ accessToken, userId });
 
+    } catch (error) {
+      logger.error(error);
+      return Promise.reject(error);
+    }
+  }
+
+  async findUserByIdAndUsernameAndRole(userId: string, username: string, role: string): Promise<IStaffUser> {
+    try {
+      const user = await StaffUser.findOne({ _id: userId, username, role });
+
+      if (!user) {
+        logger.error('User not found');
+        return Promise.reject(new CustomHttpError(HTTP_CODES.UNPROCESSABLE_ENTITY, ERRORS.UNPROCESSABLE_ENTITY_ERROR, 'Staff user not found'));
+      }
+
+      return Promise.resolve(user);
     } catch (error) {
       logger.error(error);
       return Promise.reject(error);
