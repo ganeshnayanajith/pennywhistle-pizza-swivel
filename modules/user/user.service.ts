@@ -1,6 +1,7 @@
 import { IUser, User } from './user.model';
 import CustomHttpError from '../../lib/custom-http-error';
 import { ERRORS, HTTP_CODES } from '../../lib/constant';
+import { UserRolesEnum } from '../../lib/enum';
 import logger from '../../lib/logger';
 import Utils from '../../lib/utils';
 import { LoginUserDTO, RegisterUserDTO } from './dtos';
@@ -24,6 +25,7 @@ class UserService {
         email,
         mobileNumber,
         password,
+        role: UserRolesEnum.Customer,
       });
 
       await newUser.save();
@@ -50,7 +52,7 @@ class UserService {
 
       const userId = user.id;
 
-      const accessToken = await Utils.generateToken({ userId, name: user.name, email });
+      const accessToken = await Utils.generateToken({ userId, email, role: user.role });
 
       logger.info(`User login successful ${JSON.stringify({ accessToken, user })}`);
 
@@ -62,9 +64,9 @@ class UserService {
     }
   }
 
-  async findUserByIdAndEmail(userId: string, email: string): Promise<IUser> {
+  async findUserByIdAndEmailAndRole(userId: string, email: string, role: string): Promise<IUser> {
     try {
-      const user = await User.findOne({ _id: userId, email });
+      const user = await User.findOne({ _id: userId, email, role });
 
       if (!user) {
         logger.error('User not found');

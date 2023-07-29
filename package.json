@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "npx tsc && ts-node scripts/copy-assets",
+    "seed": "ts-node seed-runner.ts",
     "start": "node dist/bin/www.js | npx pino-pretty",
     "start:dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/bin/www.js\""
   },
