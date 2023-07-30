@@ -14,6 +14,15 @@ const options = {
         url: 'http://localhost:4000/api',
       },
     ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
   },
   apis: [ './modules/*/*.route.ts' ],
 };

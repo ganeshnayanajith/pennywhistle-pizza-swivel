@@ -44,6 +44,8 @@ const router = Router();
  *   post:
  *     summary: Create a new product
  *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       content:
  *         application/json:
@@ -75,6 +77,8 @@ router.post('/', authenticator, authorizer([ StaffUserRolesEnum.Admin ]), Produc
  *   get:
  *     summary: Get a product by ID
  *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -94,7 +98,7 @@ router.post('/', authenticator, authorizer([ StaffUserRolesEnum.Admin ]), Produc
  *                   type: object
  *                   $ref: '#/definitions/CreateProductDTO'
  */
-router.get('/:id', ProductController.getProduct);
+router.get('/:id', authenticator, authorizer([ StaffUserRolesEnum.Admin ]), ProductController.getProduct);
 
 /**
  * @swagger
@@ -102,6 +106,8 @@ router.get('/:id', ProductController.getProduct);
  *   put:
  *     summary: Update a product by ID
  *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -128,7 +134,7 @@ router.get('/:id', ProductController.getProduct);
  *                   type: object
  *                   $ref: '#/definitions/UpdateProductDTO'
  */
-router.put('/:id', ProductController.updateProduct);
+router.put('/:id', authenticator, authorizer([ StaffUserRolesEnum.Admin ]), ProductController.updateProduct);
 
 /**
  * @swagger
@@ -136,6 +142,8 @@ router.put('/:id', ProductController.updateProduct);
  *   delete:
  *     summary: Delete a product by ID
  *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -157,6 +165,6 @@ router.put('/:id', ProductController.updateProduct);
  *                   type: object
  *                   $ref: '#/definitions/UpdateProductDTO'
  */
-router.delete('/:id', ProductController.deleteProduct);
+router.delete('/:id', authenticator, authorizer([ StaffUserRolesEnum.Admin ]), ProductController.deleteProduct);
 
 export default router;
