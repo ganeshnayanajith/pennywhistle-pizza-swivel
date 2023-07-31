@@ -1,5 +1,5 @@
 import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { ProductSize } from '../product.model';
+import { ProductSizeEnum } from '../../../lib/enum';
 
 export default class CreateProductDTO {
   @IsNotEmpty()
@@ -10,13 +10,13 @@ export default class CreateProductDTO {
   @IsString()
   sku: string;
 
-  @IsEnum(ProductSize)
-  size: ProductSize;
+  @IsEnum(ProductSizeEnum)
+  size: ProductSizeEnum;
 
   @IsNumber()
   price: number;
 
-  constructor(name: string, sku: string, size: ProductSize, price: number) {
+  constructor(name: string, sku: string, size: ProductSizeEnum, price: number) {
     this.name = name;
     this.sku = sku;
     this.size = size;
