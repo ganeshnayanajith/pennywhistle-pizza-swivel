@@ -51,7 +51,7 @@ const router = Router();
  *         enum: [PickUpFromStore, DeliverToHome]
  *       status:
  *         type: string
- *         enum: [Pending, Cancelled, Preparing, ReadyToPickUpFromStore, ReadyToDeliverToHome, Delivered]
+ *         enum: [Pending, Cancelled, Preparing, ReadyToPickUpFromStore, ReadyToDeliverToHome, Delivered, PickedUpFromStore, Completed]
  *       orderItems:
  *         type: array
  *         items:
@@ -222,5 +222,33 @@ router.get('/staff-user/pending', authenticator, authorizer([ StaffUserRolesEnum
  *                   type: null
  */
 router.get('/staff-user/ready-to-deliver', authenticator, authorizer([ StaffUserRolesEnum.DeliveryStaff, StaffUserRolesEnum.Admin ]), OrderController.getReadyToDeliverOrders);
+
+/**
+ * @swagger
+ * /order/{id}:
+ *   put:
+ *     summary: Update order status by staff users
+ *     tags: [Orders]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Order status updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: object
+ *                   $ref: '#/definitions/Order'
+ *                 error:
+ *                   type: null
+ */
+router.put('/:id', authenticator, authorizer([ StaffUserRolesEnum.StoreStaff, StaffUserRolesEnum.KitchenStaff, StaffUserRolesEnum.DeliveryStaff, StaffUserRolesEnum.Admin ]), OrderController.updateOrderStatus);
 
 export default router;

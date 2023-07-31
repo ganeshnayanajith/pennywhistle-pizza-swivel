@@ -2,7 +2,7 @@ import { IOrder, Order, OrderItem } from './order.model';
 import { Types } from 'mongoose';
 import logger from '../../lib/logger';
 import { CreateOrderDTO } from './dtos';
-import { OrderStatusEnum, OrderTypeEnum } from '../../lib/enum';
+import { OrderStatusEnum, OrderTypeEnum, StaffUserRolesEnum } from '../../lib/enum';
 import ProductService from '../product/product.service';
 import CustomHttpError from '../../lib/custom-http-error';
 import { ERRORS, HTTP_CODES } from '../../lib/constant';
@@ -97,6 +97,69 @@ class OrderService {
     try {
       const orders = await Order.find({ status, type }).exec();
       return Promise.resolve(orders);
+    } catch (error) {
+      logger.error(error);
+      return Promise.reject(error);
+    }
+  }
+
+  async updateOrderStatus(orderId: string, status: OrderStatusEnum, role: StaffUserRolesEnum): Promise<IOrder> {
+    try {
+      const order = await Order.findById(orderId).exec();
+      if (!order) {
+        return Promise.reject(new CustomHttpError(HTTP_CODES.NOT_FOUND, ERRORS.NOT_FOUND_ERROR, 'Order not found'));
+      }
+
+      if (role === StaffUserRolesEnum.Admin) {
+        // Admin can update from any status to any status
+        order.status = status;
+      } else if (role === StaffUserRolesEnum.StoreStaff) {
+        if (order.status === OrderStatusEnum.Pending && status === OrderStatusEnum.Cancelled) {
+          order.status = status;
+        } else if (
+          order.status === OrderStatusEnum.ReadyToPickUpFromStore &&
+          status === OrderStatusEnum.PickedUpFromStore
+        ) {
+          order.status = status;
+        } else {
+          return Promise.reject(new CustomHttpError(HTTP_CODES.FORBIDDEN, ERRORS.FORBIDDEN_ERROR, 'Invalid status update'));
+        }
+      } else if (role === StaffUserRolesEnum.KitchenStaff) {
+        if (order.status === OrderStatusEnum.Pending && status === OrderStatusEnum.Preparing) {
+          order.status = status;
+        } else if (
+          order.type === OrderTypeEnum.PickUpFromStore &&
+          order.status === OrderStatusEnum.Preparing &&
+          status === OrderStatusEnum.ReadyToPickUpFromStore
+        ) {
+          order.status = status;
+        } else if (
+          order.type === OrderTypeEnum.DeliverToHome &&
+          order.status === OrderStatusEnum.Preparing &&
+          status === OrderStatusEnum.ReadyToDeliverToHome
+        ) {
+          order.status = status;
+        } else {
+          return Promise.reject(new CustomHttpError(HTTP_CODES.FORBIDDEN, ERRORS.FORBIDDEN_ERROR, 'Invalid status update'));
+        }
+      } else if (role === StaffUserRolesEnum.DeliveryStaff) {
+        if (
+          order.status === OrderStatusEnum.ReadyToDeliverToHome &&
+          status === OrderStatusEnum.Delivered
+        ) {
+          order.status = status;
+        } else {
+          return Promise.reject(new CustomHttpError(HTTP_CODES.FORBIDDEN, ERRORS.FORBIDDEN_ERROR, 'Invalid status update'));
+        }
+      } else {
+        return Promise.reject(new CustomHttpError(HTTP_CODES.FORBIDDEN, ERRORS.FORBIDDEN_ERROR, 'Invalid role'));
+      }
+
+      // Save the order after updating the status
+      await order.save();
+
+      return Promise.resolve(order);
+
     } catch (error) {
       logger.error(error);
       return Promise.reject(error);

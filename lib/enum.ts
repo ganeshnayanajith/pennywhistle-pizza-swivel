@@ -22,6 +22,8 @@ export enum OrderStatusEnum {
   ReadyToPickUpFromStore = 'ReadyToPickUpFromStore',
   ReadyToDeliverToHome = 'ReadyToDeliverToHome',
   Delivered = 'Delivered',
+  PickedUpFromStore = 'PickedUpFromStore',
+  Completed = 'Completed',
 }
 
 export enum OrderTypeEnum {

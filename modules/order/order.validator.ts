@@ -19,6 +19,17 @@ class OrderValidator {
       return Promise.reject(err);
     }
   }
+
+  async updateValidation(updateOrderDTO: UpdateOrderDTO) {
+    try {
+      const { status }: UpdateOrderDTO = updateOrderDTO;
+      const updateDTO: UpdateOrderDTO = new UpdateOrderDTO(status);
+      await DTOValidator.validateDTO(updateDTO);
+      return Promise.resolve(updateDTO);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
 }
 
 export default new OrderValidator();

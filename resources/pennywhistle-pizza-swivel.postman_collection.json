@@ -569,7 +569,7 @@
 			"response": []
 		},
 		{
-			"name": "order-staff-user-pending-get Copy",
+			"name": "order-staff-user-ready-to-deliver-get",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -595,6 +595,46 @@
 						"order",
 						"staff-user",
 						"ready-to-deliver"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "order-staff-user-update",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"status\":\"ReadyToDeliverToHome\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/order/64c7498ae4ab71743d65ee0f",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"order",
+						"64c7498ae4ab71743d65ee0f"
 					]
 				}
 			},
