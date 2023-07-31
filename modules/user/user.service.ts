@@ -79,6 +79,16 @@ class UserService {
       return Promise.reject(error);
     }
   }
+
+  async getUsers(): Promise<IUser[]> {
+    try {
+      const users = await User.find({}).exec();
+      return Promise.resolve(users);
+    } catch (error) {
+      logger.error(error);
+      return Promise.reject(error);
+    }
+  }
 }
 
 export default new UserService();
