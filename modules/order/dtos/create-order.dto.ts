@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsString, ValidateNested, ArrayNotEmpty } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsString, ValidateNested, ArrayNotEmpty, IsNumber } from 'class-validator';
 import { OrderTypeEnum } from '../../../lib/enum';
 
 export class CreateOrderItemDTO {
@@ -6,7 +6,7 @@ export class CreateOrderItemDTO {
   @IsString()
   productId: string;
 
-  @IsNotEmpty()
+  @IsNumber()
   quantity: number;
 
   constructor(productId: string, quantity: number) {
