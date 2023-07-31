@@ -50,6 +50,19 @@ class StaffUserService {
       return Promise.reject(error);
     }
   }
+
+  async create(data: CreateStaffUserDTO) {
+    try {
+      const { username, password, role } = data;
+      const userId = new Types.ObjectId();
+      const newStaffUser = new StaffUser({ _id: userId, username, password, role });
+      await newStaffUser.save();
+      return Promise.resolve({ userId });
+    } catch (error) {
+      logger.error(error);
+      return Promise.reject(error);
+    }
+  }
 }
 
 export default new StaffUserService();
