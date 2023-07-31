@@ -1,4 +1,4 @@
-import { CreateOrderDTO, CreateOrderItemDTO, UpdateOrderDTO } from './dtos';
+import { CreateOrderDTO, CreateOrderItemDTO, UpdateOrderStatusDTO } from './dtos';
 import DTOValidator from '../../lib/dto-validator';
 
 class OrderValidator {
@@ -20,10 +20,10 @@ class OrderValidator {
     }
   }
 
-  async updateValidation(updateOrderDTO: UpdateOrderDTO) {
+  async updateStatusValidation(updateOrderStatusDTO: UpdateOrderStatusDTO) {
     try {
-      const { status }: UpdateOrderDTO = updateOrderDTO;
-      const updateDTO: UpdateOrderDTO = new UpdateOrderDTO(status);
+      const { status }: UpdateOrderStatusDTO = updateOrderStatusDTO;
+      const updateDTO: UpdateOrderStatusDTO = new UpdateOrderStatusDTO(status);
       await DTOValidator.validateDTO(updateDTO);
       return Promise.resolve(updateDTO);
     } catch (err) {

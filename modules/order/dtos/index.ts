@@ -1,4 +1,4 @@
 import { CreateOrderDTO, CreateOrderItemDTO } from './create-order.dto';
-import { UpdateOrderDTO } from './update-order.dto';
+import { UpdateOrderStatusDTO } from './update-order-status.dto';
 
-export { CreateOrderDTO, CreateOrderItemDTO, UpdateOrderDTO };
+export { CreateOrderDTO, CreateOrderItemDTO, UpdateOrderStatusDTO };

@@ -2,7 +2,7 @@ import { NextFunction, Response } from 'express';
 import OrderService from './order.service';
 import { ERRORS, HTTP_CODES } from '../../lib/constant';
 import Utils from '../../lib/utils';
-import { CreateOrderDTO, UpdateOrderDTO } from './dtos';
+import { CreateOrderDTO, UpdateOrderStatusDTO } from './dtos';
 import { AuthRequest } from '../../lib/security/auth-request';
 import CustomHttpError from '../../lib/custom-http-error';
 import OrderValidator from './order.validator';
@@ -78,7 +78,7 @@ class OrderController {
       // @ts-ignore
       const role: StaffUserRolesEnum = req.user.role;
       const orderId = req.params.id;
-      const { status }: UpdateOrderDTO = await OrderValidator.updateValidation(req.body);
+      const { status }: UpdateOrderStatusDTO = await OrderValidator.updateStatusValidation(req.body);
       const orders = await OrderService.updateOrderStatus(orderId, status, role);
       Utils.successResponse(res, HTTP_CODES.OK, 'Orders status updated successfully', orders);
     } catch (err) {

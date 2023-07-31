@@ -63,6 +63,12 @@ const router = Router();
  *         type: number
  *       userId:
  *         type: string
+ *   UpdateOrderStatusDTO:
+ *     type: object
+ *     properties:
+ *       status:
+ *         type: string
+ *         enum: [Pending, Cancelled, Preparing, ReadyToPickUpFromStore, ReadyToDeliverToHome, Delivered, PickedUpFromStore, Completed]
  */
 
 /**
@@ -231,6 +237,18 @@ router.get('/staff-user/ready-to-deliver', authenticator, authorizer([ StaffUser
  *     tags: [Orders]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the order to update
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/definitions/UpdateOrderStatusDTO'
  *     responses:
  *       200:
  *         description: Order status updated successfully
