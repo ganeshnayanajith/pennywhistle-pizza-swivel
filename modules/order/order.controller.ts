@@ -6,7 +6,7 @@ import { CreateOrderDTO } from './dtos';
 import { AuthRequest } from '../../lib/security/auth-request';
 import CustomHttpError from '../../lib/custom-http-error';
 import OrderValidator from './order.validator';
-import { OrderStatusEnum, StaffUserRolesEnum } from '../../lib/enum';
+import { OrderStatusEnum, OrderTypeEnum, StaffUserRolesEnum } from '../../lib/enum';
 
 class OrderController {
   async createOrder(req: AuthRequest, res: Response, next: NextFunction) {
@@ -50,11 +50,24 @@ class OrderController {
   async getPendingOrders(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       // @ts-ignore
-      if (req.user.role !== StaffUserRolesEnum.StoreStaff && req.user.role !== StaffUserRolesEnum.KitchenStaff) {
+      if (req.user.role !== StaffUserRolesEnum.StoreStaff && req.user.role !== StaffUserRolesEnum.KitchenStaff && req.user.role !== StaffUserRolesEnum.Admin) {
         throw new CustomHttpError(HTTP_CODES.FORBIDDEN, ERRORS.FORBIDDEN_ERROR, 'Forbidden. User role is not authorized');
       }
       const orders = await OrderService.getOrdersByStatus(OrderStatusEnum.Pending);
       Utils.successResponse(res, HTTP_CODES.OK, 'Pending orders fetched successfully', orders);
+    } catch (err) {
+      Utils.errorResponse(res, err);
+    }
+  }
+
+  async getReadyToDeliverOrders(req: AuthRequest, res: Response, next: NextFunction) {
+    try {
+      // @ts-ignore
+      if (req.user.role !== StaffUserRolesEnum.DeliveryStaff && req.user.role !== StaffUserRolesEnum.Admin) {
+        throw new CustomHttpError(HTTP_CODES.FORBIDDEN, ERRORS.FORBIDDEN_ERROR, 'Forbidden. User role is not authorized');
+      }
+      const orders = await OrderService.getOrdersByStatusAndType(OrderStatusEnum.ReadyToDeliverToHome, OrderTypeEnum.DeliverToHome);
+      Utils.successResponse(res, HTTP_CODES.OK, 'Ready to deliver orders fetched successfully', orders);
     } catch (err) {
       Utils.errorResponse(res, err);
     }

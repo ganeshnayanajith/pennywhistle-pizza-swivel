@@ -80,7 +80,7 @@
 			"response": []
 		},
 		{
-			"name": "staff-user-login",
+			"name": "staff-user-login-admin",
 			"event": [
 				{
 					"listen": "test",
@@ -100,6 +100,135 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"username\": \"Admin\",\r\n    \"password\": \"admin123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/staff-user/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"staff-user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "staff-user-login-store-staff",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();\r",
+							"pm.environment.set(\"accessToken\", jsonData.data.accessToken);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"StoreStaff\",\r\n    \"password\": \"storestaff123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/staff-user/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"staff-user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "staff-user-login-kitchen-staff",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();\r",
+							"pm.environment.set(\"accessToken\", jsonData.data.accessToken);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"KitchenStaff\",\r\n    \"password\": \"kitchenstaff123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/staff-user/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"staff-user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "staff-user-login-delivery-staff",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();\r",
+							"pm.environment.set(\"accessToken\", jsonData.data.accessToken);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"DeliveryStaff\",\r\n    \"password\": \"deliverystaff123\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -150,7 +279,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"StoreStaff2\",\r\n    \"password\": \"admin123\",\r\n    \"role\": \"StoreStaff\"\r\n}",
+					"raw": "// {\r\n//     \"username\": \"StoreStaff\",\r\n//     \"password\": \"storestaff123\",\r\n//     \"role\": \"StoreStaff\"\r\n// }\r\n// {\r\n//     \"username\": \"KitchenStaff\",\r\n//     \"password\": \"kitchenstaff123\",\r\n//     \"role\": \"KitchenStaff\"\r\n// }\r\n// {\r\n//     \"username\": \"DeliveryStaff\",\r\n//     \"password\": \"deliverystaff123\",\r\n//     \"role\": \"DeliveryStaff\"\r\n// }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -434,6 +563,38 @@
 						"order",
 						"staff-user",
 						"pending"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "order-staff-user-pending-get Copy",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/api/order/staff-user/ready-to-deliver",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"order",
+						"staff-user",
+						"ready-to-deliver"
 					]
 				}
 			},

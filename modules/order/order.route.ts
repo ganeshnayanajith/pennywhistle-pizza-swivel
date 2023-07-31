@@ -167,7 +167,7 @@ router.get('/user/history', authenticator, authorizer([ UserRolesEnum.Customer ]
  * @swagger
  * /order/staff-user/pending:
  *   get:
- *     summary: Get pending orders for store and kitchen staff users
+ *     summary: Get pending orders for store staff, kitchen staff, and admin users
  *     tags: [Orders]
  *     security:
  *       - bearerAuth: []
@@ -191,6 +191,36 @@ router.get('/user/history', authenticator, authorizer([ UserRolesEnum.Customer ]
  *                 error:
  *                   type: null
  */
-router.get('/staff-user/pending', authenticator, authorizer([ StaffUserRolesEnum.StoreStaff, StaffUserRolesEnum.KitchenStaff ]), OrderController.getPendingOrders);
+router.get('/staff-user/pending', authenticator, authorizer([ StaffUserRolesEnum.StoreStaff, StaffUserRolesEnum.KitchenStaff, StaffUserRolesEnum.Admin ]), OrderController.getPendingOrders);
+
+/**
+ * @swagger
+ * /order/staff-user/ready-to-deliver:
+ *   get:
+ *     summary: Get ready to deliver orders for delivery staff and admin users
+ *     tags: [Orders]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Ready to deliver orders retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     $ref: '#/definitions/Order'
+ *                 error:
+ *                   type: null
+ */
+router.get('/staff-user/ready-to-deliver', authenticator, authorizer([ StaffUserRolesEnum.DeliveryStaff, StaffUserRolesEnum.Admin ]), OrderController.getReadyToDeliverOrders);
 
 export default router;

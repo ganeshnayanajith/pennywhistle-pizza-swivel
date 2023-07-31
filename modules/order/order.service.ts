@@ -2,7 +2,7 @@ import { IOrder, Order, OrderItem } from './order.model';
 import { Types } from 'mongoose';
 import logger from '../../lib/logger';
 import { CreateOrderDTO } from './dtos';
-import { OrderStatusEnum } from '../../lib/enum';
+import { OrderStatusEnum, OrderTypeEnum } from '../../lib/enum';
 import ProductService from '../product/product.service';
 import CustomHttpError from '../../lib/custom-http-error';
 import { ERRORS, HTTP_CODES } from '../../lib/constant';
@@ -86,6 +86,16 @@ class OrderService {
   async getOrdersByStatus(status: OrderStatusEnum): Promise<IOrder[]> {
     try {
       const orders = await Order.find({ status }).exec();
+      return Promise.resolve(orders);
+    } catch (error) {
+      logger.error(error);
+      return Promise.reject(error);
+    }
+  }
+
+  async getOrdersByStatusAndType(status: OrderStatusEnum, type: OrderTypeEnum): Promise<IOrder[]> {
+    try {
+      const orders = await Order.find({ status, type }).exec();
       return Promise.resolve(orders);
     } catch (error) {
       logger.error(error);
