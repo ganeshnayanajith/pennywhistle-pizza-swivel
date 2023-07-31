@@ -161,6 +161,6 @@ router.get('/:id', authenticator, authorizer([ UserRolesEnum.Customer ]), OrderC
  *                 error:
  *                   type: null
  */
-router.get('/', authenticator, OrderController.getOrderHistory);
+router.get('/', authenticator, authorizer([ UserRolesEnum.Customer ]), OrderController.getOrderHistory);
 
 export default router;
