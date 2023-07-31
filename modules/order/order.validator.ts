@@ -1,4 +1,4 @@
-import { CreateOrderDTO, CreateOrderItemDTO } from './dtos';
+import { CreateOrderDTO, CreateOrderItemDTO, UpdateOrderDTO } from './dtos';
 import DTOValidator from '../../lib/dto-validator';
 
 class OrderValidator {
