@@ -11,11 +11,11 @@ export const authorizer = (allowedRoles: string[]) => {
 
       const user = req.user;
       if (!user) {
-        throw new CustomHttpError(HTTP_CODES.FORBIDDEN, ERRORS.AUTHORIZATION_ERROR, 'Unauthorized. User not found');
+        throw new CustomHttpError(HTTP_CODES.UNAUTHORIZED, ERRORS.AUTHORIZATION_ERROR, 'Unauthorized. User not found');
       }
 
       if (!allowedRoles.includes(<string>user?.role)) {
-        throw new CustomHttpError(HTTP_CODES.FORBIDDEN, ERRORS.AUTHORIZATION_ERROR, 'Forbidden. User role is not authorized');
+        throw new CustomHttpError(HTTP_CODES.FORBIDDEN, ERRORS.FORBIDDEN_ERROR, 'Forbidden. User role is not authorized');
       }
 
       next();

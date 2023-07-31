@@ -18,6 +18,7 @@ export const ERRORS = {
   VALIDATION_ERROR: 'ValidationError',
   AUTHENTICATION_ERROR: 'AuthenticationFailError',
   AUTHORIZATION_ERROR: 'AuthorizationFailError',
+  FORBIDDEN_ERROR: 'ForbiddenError',
   NOT_FOUND_ERROR: 'NotFoundError',
   UNPROCESSABLE_ENTITY_ERROR: 'UnprocessableEntityError',
   BAD_REQUEST_ERROR: 'BadRequestError',

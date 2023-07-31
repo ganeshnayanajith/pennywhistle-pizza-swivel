@@ -150,7 +150,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"StoreStaff\",\r\n    \"password\": \"admin123\",\r\n    \"role\": \"StoreStaff\"\r\n}",
+					"raw": "{\r\n    \"username\": \"StoreStaff2\",\r\n    \"password\": \"admin123\",\r\n    \"role\": \"StoreStaff\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -376,7 +376,7 @@
 			"response": []
 		},
 		{
-			"name": "order-get-history",
+			"name": "order-user-history-get",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -391,7 +391,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:4000/api/order",
+					"raw": "http://localhost:4000/api/order/user/history",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -399,7 +399,41 @@
 					"port": "4000",
 					"path": [
 						"api",
-						"order"
+						"order",
+						"user",
+						"history"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "order-staff-user-pending-get",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/api/order/staff-user/pending",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"order",
+						"staff-user",
+						"pending"
 					]
 				}
 			},

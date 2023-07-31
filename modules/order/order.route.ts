@@ -2,7 +2,7 @@ import { Router } from 'express';
 import OrderController from './order.controller';
 import { authenticator } from '../../lib/security/authenticator';
 import { authorizer } from '../../lib/security/authorizer';
-import { UserRolesEnum } from '../../lib/enum';
+import { StaffUserRolesEnum, UserRolesEnum } from '../../lib/enum';
 
 const router = Router();
 
@@ -135,9 +135,9 @@ router.get('/:id', authenticator, authorizer([ UserRolesEnum.Customer ]), OrderC
 
 /**
  * @swagger
- * /order:
+ * /order/user/history:
  *   get:
- *     summary: Get order history
+ *     summary: Get order history for a customer
  *     tags: [Orders]
  *     security:
  *       - bearerAuth: []
@@ -161,6 +161,36 @@ router.get('/:id', authenticator, authorizer([ UserRolesEnum.Customer ]), OrderC
  *                 error:
  *                   type: null
  */
-router.get('/', authenticator, authorizer([ UserRolesEnum.Customer ]), OrderController.getOrderHistory);
+router.get('/user/history', authenticator, authorizer([ UserRolesEnum.Customer ]), OrderController.getOrderHistory);
+
+/**
+ * @swagger
+ * /order/staff-user/pending:
+ *   get:
+ *     summary: Get pending orders for store and kitchen staff users
+ *     tags: [Orders]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Pending orders retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     $ref: '#/definitions/Order'
+ *                 error:
+ *                   type: null
+ */
+router.get('/staff-user/pending', authenticator, authorizer([ StaffUserRolesEnum.StoreStaff, StaffUserRolesEnum.KitchenStaff ]), OrderController.getPendingOrders);
 
 export default router;

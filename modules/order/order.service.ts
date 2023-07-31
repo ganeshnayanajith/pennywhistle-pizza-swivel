@@ -82,6 +82,16 @@ class OrderService {
       return Promise.reject(error);
     }
   }
+
+  async getOrdersByStatus(status: OrderStatusEnum): Promise<IOrder[]> {
+    try {
+      const orders = await Order.find({ status }).exec();
+      return Promise.resolve(orders);
+    } catch (error) {
+      logger.error(error);
+      return Promise.reject(error);
+    }
+  }
 }
 
 export default new OrderService();
