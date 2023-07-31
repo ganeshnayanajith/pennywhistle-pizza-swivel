@@ -4,6 +4,8 @@ import logger from '../../lib/logger';
 import Utils from '../../lib/utils';
 import { LoginStaffUserDTO } from './dtos';
 import { IStaffUser, StaffUser } from './staff-user.model';
+import { CreateStaffUserDTO } from './dtos';
+import { Types } from 'mongoose';
 
 class StaffUserService {
 

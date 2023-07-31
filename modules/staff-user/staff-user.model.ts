@@ -12,7 +12,7 @@ export interface IStaffUser extends Document {
 
 const userSchema = new Schema<IStaffUser>({
   _id: Types.ObjectId,
-  username: { type: String, required: true },
+  username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   role: { type: String, required: true, enum: Object.values(StaffUserRolesEnum) },
 }, { timestamps: true });
