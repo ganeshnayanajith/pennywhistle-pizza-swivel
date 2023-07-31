@@ -12,6 +12,7 @@ import indexRouter from './modules';
 import userRouter from './modules/user/user.route';
 import staffUserRouter from './modules/staff-user/staff-user.route';
 import productRouter from './modules/product/product.route';
+import orderRouter from './modules/order/order.route';
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.use(`${BASE_PATH}/`, indexRouter);
 app.use(`${BASE_PATH}/user`, userRouter);
 app.use(`${BASE_PATH}/staff-user`, staffUserRouter);
 app.use(`${BASE_PATH}/product`, productRouter);
+app.use(`${BASE_PATH}/order`, orderRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
