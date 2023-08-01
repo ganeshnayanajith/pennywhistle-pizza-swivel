@@ -33,6 +33,16 @@ class ReportService {
     }
   }
 
+  async getOrdersAndCount(skip: number, limit: number, date: string, status: OrderStatusEnum) {
+    try {
+      const result = await OrderService.getOrdersAndCount(skip, limit, date, status);
+      return Promise.resolve(result);
+    } catch (error) {
+      logger.error(error);
+      return Promise.reject(error);
+    }
+  }
+
 }
 
 export default new ReportService();
