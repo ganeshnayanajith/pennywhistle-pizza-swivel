@@ -5,6 +5,7 @@ import { IOrder } from '../order/order.model';
 import OrderService from '../order/order.service';
 import CustomHttpError from '../../lib/custom-http-error';
 import { ERRORS, HTTP_CODES } from '../../lib/constant';
+import { OrderStatusEnum } from '../../lib/enum';
 
 class ReportService {
 

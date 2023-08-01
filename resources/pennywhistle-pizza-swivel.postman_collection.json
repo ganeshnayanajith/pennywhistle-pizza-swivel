@@ -670,6 +670,93 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "report-admin-get-user-orders",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/api/report/user/orders?userId=64c52b69cf026237029f2659",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"report",
+						"user",
+						"orders"
+					],
+					"query": [
+						{
+							"key": "userId",
+							"value": "64c52b69cf026237029f2659"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "report-admin-get-orders",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/api/report/orders?skip=1&limit=1&date=2023-07-30&status=Pending",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"report",
+						"orders"
+					],
+					"query": [
+						{
+							"key": "skip",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "1"
+						},
+						{
+							"key": "date",
+							"value": "2023-07-30"
+						},
+						{
+							"key": "status",
+							"value": "Pending"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

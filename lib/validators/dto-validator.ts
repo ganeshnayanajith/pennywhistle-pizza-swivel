@@ -1,6 +1,6 @@
 import { validate, ValidationError } from 'class-validator';
-import CustomHttpError from './custom-http-error';
-import { ERRORS, HTTP_CODES } from './constant';
+import CustomHttpError from '../custom-http-error';
+import { ERRORS, HTTP_CODES } from '../constant';
 
 class DTOValidator {
 

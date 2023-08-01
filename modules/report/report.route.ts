@@ -80,4 +80,66 @@ router.get('/users', authenticator, authorizer([ StaffUserRolesEnum.Admin ]), Re
  */
 router.get('/user/orders', authenticator, authorizer([ StaffUserRolesEnum.Admin ]), ReportController.getUserOrders);
 
+/**
+ * @swagger
+ * /report/orders:
+ *   get:
+ *     summary: Get orders as a report by admin
+ *     tags: [Reports]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: skip
+ *         required: false
+ *         description: No of records to skip
+ *         schema:
+ *           type: number
+ *       - in: query
+ *         name: limit
+ *         required: false
+ *         description: No of records to limit
+ *         schema:
+ *           type: number
+ *       - in: query
+ *         name: date
+ *         required: false
+ *         description: Date to query orders
+ *         schema:
+ *           type: string
+ *           format: date
+ *       - in: query
+ *         name: status
+ *         required: false
+ *         description: Status to query orders
+ *         schema:
+ *           type: string
+ *           enum: [Pending, Cancelled, Preparing, ReadyToPickUpFromStore, ReadyToDeliverToHome, Delivered, PickedUpFromStore, Completed]
+ *     responses:
+ *       200:
+ *         description: Orders fetched successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     count:
+ *                       type: number
+ *                     orders:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         $ref: '#/definitions/Order'
+ *                 error:
+ *                   type: null
+ */
+router.get('/orders', authenticator, authorizer([ StaffUserRolesEnum.Admin ]), ReportController.getOrdersAndCount);
+
 export default router;

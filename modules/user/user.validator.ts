@@ -1,5 +1,5 @@
 import { LoginUserDTO, RegisterUserDTO } from './dtos';
-import DTOValidator from '../../lib/dto-validator';
+import DTOValidator from '../../lib/validators/dto-validator';
 
 class UserValidator {
 
