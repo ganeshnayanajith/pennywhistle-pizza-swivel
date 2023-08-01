@@ -7,6 +7,7 @@ import { AuthRequest } from '../../lib/security/auth-request';
 import CustomHttpError from '../../lib/custom-http-error';
 import OrderValidator from './order.validator';
 import { OrderStatusEnum, OrderTypeEnum, StaffUserRolesEnum } from '../../lib/enum';
+import QueryValidator from '../../lib/validators/query.validator';
 
 class OrderController {
   async createOrder(req: AuthRequest, res: Response, next: NextFunction) {
@@ -36,12 +37,13 @@ class OrderController {
     }
   }
 
-  async getOrderHistory(req: AuthRequest, res: Response, next: NextFunction) {
+  async getOrderHistoryAndCount(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       // @ts-ignore
       const userId = req.user.userId;
-      const orders = await OrderService.getOrderHistory(userId);
-      Utils.successResponse(res, HTTP_CODES.OK, 'Order history fetched successfully', orders);
+      const { skip, limit } = await QueryValidator.isValidSkipLimitTwenty(req.query);
+      const result = await OrderService.getOrderHistoryAndCount(skip, limit, userId);
+      Utils.successResponse(res, HTTP_CODES.OK, 'Order history fetched successfully', result);
     } catch (err) {
       Utils.errorResponse(res, err);
     }

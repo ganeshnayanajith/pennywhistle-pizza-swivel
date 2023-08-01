@@ -73,10 +73,20 @@ class OrderService {
     }
   }
 
-  async getOrderHistory(userId: string): Promise<IOrder[]> {
+  async getOrderHistoryAndCount(skip: number, limit: number, userId: string): Promise<{
+    count: number,
+    orders: IOrder[]
+  }> {
     try {
-      const orders = await Order.find({ userId }).exec();
-      return Promise.resolve(orders);
+      const query = { userId };
+
+      const [ count, orders ] = await Promise.all([
+        Order.countDocuments(query),
+        Order.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit).exec(),
+      ]);
+
+      return Promise.resolve({ count, orders });
+
     } catch (error) {
       logger.error(error);
       return Promise.reject(error);

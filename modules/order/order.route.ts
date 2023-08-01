@@ -147,6 +147,19 @@ router.get('/:id', authenticator, authorizer([ UserRolesEnum.Customer ]), OrderC
  *     tags: [Orders]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: skip
+ *         required: false
+ *         description: No of records to skip
+ *         schema:
+ *           type: number
+ *       - in: query
+ *         name: limit
+ *         required: false
+ *         description: No of records to limit
+ *         schema:
+ *           type: number
  *     responses:
  *       200:
  *         description: Order history retrieved successfully
@@ -167,7 +180,7 @@ router.get('/:id', authenticator, authorizer([ UserRolesEnum.Customer ]), OrderC
  *                 error:
  *                   type: null
  */
-router.get('/user/history', authenticator, authorizer([ UserRolesEnum.Customer ]), OrderController.getOrderHistory);
+router.get('/user/history', authenticator, authorizer([ UserRolesEnum.Customer ]), OrderController.getOrderHistoryAndCount);
 
 /**
  * @swagger

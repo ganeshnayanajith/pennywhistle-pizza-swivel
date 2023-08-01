@@ -19,21 +19,27 @@ class ReportService {
     }
   }
 
-  async getUserOrders(userId: string): Promise<IOrder[]> {
+  async getUserOrdersReport(skip: number, limit: number, userId: string): Promise<{
+    count: number,
+    orders: IOrder[]
+  }> {
     try {
       const user = await UserService.getUserById(userId);
       if (!user) {
         return Promise.reject(new CustomHttpError(HTTP_CODES.NOT_FOUND, ERRORS.NOT_FOUND_ERROR, 'User not found'));
       }
-      const orders = await OrderService.getOrderHistory(userId);
-      return Promise.resolve(orders);
+      const result = await OrderService.getOrderHistoryAndCount(skip, limit, userId);
+      return Promise.resolve(result);
     } catch (error) {
       logger.error(error);
       return Promise.reject(error);
     }
   }
 
-  async getOrdersAndCount(skip: number, limit: number, date: string, status: OrderStatusEnum) {
+  async getOrdersReport(skip: number, limit: number, date: string, status: OrderStatusEnum): Promise<{
+    count: number,
+    orders: IOrder[]
+  }> {
     try {
       const result = await OrderService.getOrdersAndCount(skip, limit, date, status);
       return Promise.resolve(result);

@@ -15,6 +15,12 @@ const schemaGetOrdersReport = Joi.object().keys({
   status: Joi.string().valid(OrderStatusEnum.Pending, OrderStatusEnum.Cancelled, OrderStatusEnum.ReadyToPickUpFromStore, OrderStatusEnum.ReadyToDeliverToHome, OrderStatusEnum.Delivered, OrderStatusEnum.PickedUpFromStore, OrderStatusEnum.Completed),
 });
 
+const schemaGetUserOrdersReport = Joi.object().keys({
+  skip: Joi.number().default(0),
+  limit: Joi.number().default(20),
+  userId: Joi.string().required(),
+});
+
 class QueryValidator {
   isValidSkipLimitTwenty(obj: any) {
     const { value, error } = schemaSkipLimitTwenty.validate(obj);
@@ -26,6 +32,14 @@ class QueryValidator {
 
   isValidGetOrdersReport(obj: any) {
     const { value, error } = schemaGetOrdersReport.validate(obj);
+    if (error) {
+      return Promise.reject(new CustomHttpError(HTTP_CODES.BAD_REQUEST, ERRORS.BAD_REQUEST_ERROR, error.message));
+    }
+    return Promise.resolve(value);
+  }
+
+  isValidGetUserOrdersReport(obj: any) {
+    const { value, error } = schemaGetUserOrdersReport.validate(obj);
     if (error) {
       return Promise.reject(new CustomHttpError(HTTP_CODES.BAD_REQUEST, ERRORS.BAD_REQUEST_ERROR, error.message));
     }
