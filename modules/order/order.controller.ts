@@ -55,7 +55,8 @@ class OrderController {
       if (req.user.role !== StaffUserRolesEnum.StoreStaff && req.user.role !== StaffUserRolesEnum.KitchenStaff && req.user.role !== StaffUserRolesEnum.Admin) {
         throw new CustomHttpError(HTTP_CODES.FORBIDDEN, ERRORS.FORBIDDEN_ERROR, 'Forbidden. User role is not authorized');
       }
-      const orders = await OrderService.getOrdersByStatus(OrderStatusEnum.Pending);
+      const { skip, limit } = await QueryValidator.isValidSkipLimitTwenty(req.query);
+      const orders = await OrderService.getOrdersAndCountByStatus(skip, limit, OrderStatusEnum.Pending);
       Utils.successResponse(res, HTTP_CODES.OK, 'Pending orders fetched successfully', orders);
     } catch (err) {
       Utils.errorResponse(res, err);
@@ -68,7 +69,8 @@ class OrderController {
       if (req.user.role !== StaffUserRolesEnum.DeliveryStaff && req.user.role !== StaffUserRolesEnum.Admin) {
         throw new CustomHttpError(HTTP_CODES.FORBIDDEN, ERRORS.FORBIDDEN_ERROR, 'Forbidden. User role is not authorized');
       }
-      const orders = await OrderService.getOrdersByStatusAndType(OrderStatusEnum.ReadyToDeliverToHome, OrderTypeEnum.DeliverToHome);
+      const { skip, limit } = await QueryValidator.isValidSkipLimitTwenty(req.query);
+      const orders = await OrderService.getOrdersAndCountByStatusAndType(skip, limit, OrderStatusEnum.ReadyToDeliverToHome, OrderTypeEnum.DeliverToHome);
       Utils.successResponse(res, HTTP_CODES.OK, 'Ready to deliver orders fetched successfully', orders);
     } catch (err) {
       Utils.errorResponse(res, err);

@@ -93,20 +93,42 @@ class OrderService {
     }
   }
 
-  async getOrdersByStatus(status: OrderStatusEnum): Promise<IOrder[]> {
+  async getOrdersAndCountByStatus(skip: number, limit: number, status: OrderStatusEnum): Promise<{
+    count: number,
+    orders: IOrder[]
+  }> {
     try {
-      const orders = await Order.find({ status }).exec();
-      return Promise.resolve(orders);
+
+      const query = { status };
+
+      const [ count, orders ] = await Promise.all([
+        Order.countDocuments(query),
+        Order.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit).exec(),
+      ]);
+
+      return Promise.resolve({ count, orders });
+
     } catch (error) {
       logger.error(error);
       return Promise.reject(error);
     }
   }
 
-  async getOrdersByStatusAndType(status: OrderStatusEnum, type: OrderTypeEnum): Promise<IOrder[]> {
+  async getOrdersAndCountByStatusAndType(skip: number, limit: number, status: OrderStatusEnum, type: OrderTypeEnum): Promise<{
+    count: number,
+    orders: IOrder[]
+  }> {
     try {
-      const orders = await Order.find({ status, type }).exec();
-      return Promise.resolve(orders);
+
+      const query = { status, type };
+
+      const [ count, orders ] = await Promise.all([
+        Order.countDocuments(query),
+        Order.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit).exec(),
+      ]);
+
+      return Promise.resolve({ count, orders });
+
     } catch (error) {
       logger.error(error);
       return Promise.reject(error);

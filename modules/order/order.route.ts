@@ -190,6 +190,19 @@ router.get('/user/history', authenticator, authorizer([ UserRolesEnum.Customer ]
  *     tags: [Orders]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: skip
+ *         required: false
+ *         description: No of records to skip
+ *         schema:
+ *           type: number
+ *       - in: query
+ *         name: limit
+ *         required: false
+ *         description: No of records to limit
+ *         schema:
+ *           type: number
  *     responses:
  *       200:
  *         description: Pending orders retrieved successfully
@@ -220,6 +233,19 @@ router.get('/staff-user/pending', authenticator, authorizer([ StaffUserRolesEnum
  *     tags: [Orders]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: skip
+ *         required: false
+ *         description: No of records to skip
+ *         schema:
+ *           type: number
+ *       - in: query
+ *         name: limit
+ *         required: false
+ *         description: No of records to limit
+ *         schema:
+ *           type: number
  *     responses:
  *       200:
  *         description: Ready to deliver orders retrieved successfully
