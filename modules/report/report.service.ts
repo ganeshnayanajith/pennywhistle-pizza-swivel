@@ -11,8 +11,8 @@ class ReportService {
 
   async getUsersReport(skip: number, limit: number): Promise<{ count: number, users: IUser[] }> {
     try {
-      const users = await UserService.getUsersAndCount(skip, limit);
-      return Promise.resolve(users);
+      const result = await UserService.getUsersAndCount(skip, limit);
+      return Promise.resolve(result);
     } catch (error) {
       logger.error(error);
       return Promise.reject(error);
