@@ -11,29 +11,6 @@ const router = Router();
  * tags:
  *   name: Reports
  *   description: API endpoints for report views
- * definitions:
- *   User:
- *     type: object
- *     properties:
- *       _id:
- *         type: string
- *       name:
- *         type: string
- *       email:
- *         type: string
- *       mobileNumber:
- *         type: string
- *       password:
- *         type: string
- *       role:
- *         type: string
- *         enum: [Customer]
- *       createdAt:
- *         type: string
- *         format: date-time
- *       updatedAt:
- *         type: string
- *         format: date-time
  */
 
 /**
@@ -65,5 +42,42 @@ const router = Router();
  *                   type: null
  */
 router.get('/users', authenticator, authorizer([ StaffUserRolesEnum.Admin ]), ReportController.getUsers);
+
+/**
+ * @swagger
+ * /report/user/orders:
+ *   get:
+ *     summary: Get orders for a user as a report by admin
+ *     tags: [Reports]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: userId
+ *         required: true
+ *         description: ID of the user to get user orders
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: User orders fetched successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     $ref: '#/definitions/Order'
+ *                 error:
+ *                   type: null
+ */
+router.get('/user/orders', authenticator, authorizer([ StaffUserRolesEnum.Admin ]), ReportController.getUserOrders);
 
 export default router;

@@ -27,6 +27,28 @@ const router = Router();
  *         type: string
  *       password:
  *         type: string
+ *   User:
+ *     type: object
+ *     properties:
+ *       _id:
+ *         type: string
+ *       name:
+ *         type: string
+ *       email:
+ *         type: string
+ *       mobileNumber:
+ *         type: string
+ *       password:
+ *         type: string
+ *       role:
+ *         type: string
+ *         enum: [Customer]
+ *       createdAt:
+ *         type: string
+ *         format: date-time
+ *       updatedAt:
+ *         type: string
+ *         format: date-time
  */
 
 /**

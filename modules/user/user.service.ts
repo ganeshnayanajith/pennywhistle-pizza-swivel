@@ -89,6 +89,16 @@ class UserService {
       return Promise.reject(error);
     }
   }
+
+  async getUserById(userId: string): Promise<IUser | null> {
+    try {
+      const user = await User.findById(userId).exec();
+      return Promise.resolve(user);
+    } catch (error) {
+      logger.error(error);
+      return Promise.reject(error);
+    }
+  }
 }
 
 export default new UserService();

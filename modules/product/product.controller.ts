@@ -25,7 +25,7 @@ class ProductController {
       if (!result) {
         throw new CustomHttpError(HTTP_CODES.NOT_FOUND, ERRORS.NOT_FOUND_ERROR, 'Product not found');
       }
-      Utils.successResponse(res, HTTP_CODES.OK, 'Product data fetched successful', result);
+      Utils.successResponse(res, HTTP_CODES.OK, 'Product data fetched successfully', result);
     } catch (err) {
       Utils.errorResponse(res, err);
     }
