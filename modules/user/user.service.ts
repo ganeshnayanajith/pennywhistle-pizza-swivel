@@ -80,10 +80,13 @@ class UserService {
     }
   }
 
-  async getUsers(): Promise<IUser[]> {
+  async getUsersAndCount(skip: number, limit: number): Promise<{ count: number, users: IUser[] }> {
     try {
-      const users = await User.find({}).exec();
-      return Promise.resolve(users);
+      const [ count, users ] = await Promise.all([
+        User.countDocuments({}),
+        User.find({}).sort({ createdAt: -1 }).skip(skip).limit(limit).exec(),
+      ]);
+      return Promise.resolve({ count, users });
     } catch (error) {
       logger.error(error);
       return Promise.reject(error);

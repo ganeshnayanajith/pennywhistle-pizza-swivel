@@ -7,10 +7,11 @@ import QueryValidator from '../../lib/validators/query.validator';
 
 class ReportController {
 
-  async getUsers(req: AuthRequest, res: Response, next: NextFunction) {
+  async getUsersReport(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-      const result = await ReportService.getUsers();
-      Utils.successResponse(res, HTTP_CODES.OK, 'Users fetched successfully', result);
+      const { skip, limit } = await QueryValidator.isValidSkipLimitTwenty(req.query);
+      const result = await ReportService.getUsersReport(skip, limit);
+      Utils.successResponse(res, HTTP_CODES.OK, 'Users report fetched successfully', result);
     } catch (err) {
       Utils.errorResponse(res, err);
     }

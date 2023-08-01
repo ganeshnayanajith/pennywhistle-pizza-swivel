@@ -9,9 +9,9 @@ import { OrderStatusEnum } from '../../lib/enum';
 
 class ReportService {
 
-  async getUsers(): Promise<IUser[]> {
+  async getUsersReport(skip: number, limit: number): Promise<{ count: number, users: IUser[] }> {
     try {
-      const users = await UserService.getUsers();
+      const users = await UserService.getUsersAndCount(skip, limit);
       return Promise.resolve(users);
     } catch (error) {
       logger.error(error);

@@ -21,9 +21,22 @@ const router = Router();
  *     tags: [Reports]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: skip
+ *         required: false
+ *         description: No of records to skip
+ *         schema:
+ *           type: number
+ *       - in: query
+ *         name: limit
+ *         required: false
+ *         description: No of records to limit
+ *         schema:
+ *           type: number
  *     responses:
  *       200:
- *         description: Users retrieved successfully
+ *         description: Users report retrieved successfully
  *         content:
  *           application/json:
  *             schema:
@@ -41,7 +54,7 @@ const router = Router();
  *                 error:
  *                   type: null
  */
-router.get('/users', authenticator, authorizer([ StaffUserRolesEnum.Admin ]), ReportController.getUsers);
+router.get('/users', authenticator, authorizer([ StaffUserRolesEnum.Admin ]), ReportController.getUsersReport);
 
 /**
  * @swagger
