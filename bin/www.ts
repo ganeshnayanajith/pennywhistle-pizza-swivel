@@ -12,6 +12,7 @@ dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 import app from '../app';
 import debug from 'debug';
 import http from 'http';
+import logger from '../lib/logger';
 
 /**
  * Get port from environment and store in Express.
@@ -92,4 +93,5 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr?.port;
   debug('Listening on ' + bind);
+  logger.info(`Server is running on port: ${port}`);
 }
