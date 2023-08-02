@@ -80,7 +80,7 @@ const router = Router();
  *               type: object
  *               properties:
  *                 status:
- *                   type: string
+ *                   type: number
  *                 message:
  *                   type: string
  *                 data:
@@ -114,9 +114,15 @@ router.post('/', authenticator, authorizer([ StaffUserRolesEnum.Admin ]), Produc
  *             schema:
  *               type: object
  *               properties:
+ *                 status:
+ *                   type: number
+ *                 message:
+ *                   type: string
  *                 data:
  *                   type: object
  *                   $ref: '#/definitions/Product'
+ *                 error:
+ *                  type: null
  */
 router.get('/:id', authenticator, authorizer([ StaffUserRolesEnum.Admin ]), ProductController.getProduct);
 
@@ -149,11 +155,22 @@ router.get('/:id', authenticator, authorizer([ StaffUserRolesEnum.Admin ]), Prod
  *             schema:
  *               type: object
  *               properties:
+ *                 status:
+ *                   type: number
+ *                 message:
+ *                   type: string
  *                 data:
- *                   type: array
- *                   items:
- *                     type: object
- *                     $ref: '#/definitions/Product'
+ *                   type: object
+ *                   properties:
+ *                     count:
+ *                       type: number
+ *                     products:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         $ref: '#/definitions/Product'
+ *                 error:
+ *                  type: null
  */
 router.get('/', authenticator, authorizer([ StaffUserRolesEnum.Admin ]), ProductController.getProductsAndCount);
 
@@ -185,11 +202,15 @@ router.get('/', authenticator, authorizer([ StaffUserRolesEnum.Admin ]), Product
  *             schema:
  *               type: object
  *               properties:
+ *                 status:
+ *                   type: number
  *                 message:
  *                   type: string
  *                 data:
  *                   type: object
  *                   $ref: '#/definitions/Product'
+ *                 error:
+ *                  type: null
  */
 router.put('/:id', authenticator, authorizer([ StaffUserRolesEnum.Admin ]), ProductController.updateProduct);
 
@@ -216,11 +237,15 @@ router.put('/:id', authenticator, authorizer([ StaffUserRolesEnum.Admin ]), Prod
  *             schema:
  *               type: object
  *               properties:
+ *                 status:
+ *                   type: number
  *                 message:
  *                   type: string
  *                 data:
  *                   type: object
  *                   $ref: '#/definitions/Product'
+ *                 error:
+ *                  type: null
  */
 router.delete('/:id', authenticator, authorizer([ StaffUserRolesEnum.Admin ]), ProductController.deleteProduct);
 
