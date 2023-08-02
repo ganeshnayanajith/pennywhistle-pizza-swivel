@@ -12,13 +12,16 @@ class UserService {
     try {
       const { name, email, mobileNumber, password } = userData;
 
+      // checking if a user already exists with the same email or mobile number
       const existingUser = await User.findOne().or([ { email }, { mobileNumber } ]);
       if (existingUser) {
         return Promise.reject(new CustomHttpError(HTTP_CODES.BAD_REQUEST, ERRORS.VALIDATION_ERROR, 'User already exists with the same email or mobile number.'));
       }
 
+      // generating a new unique ObjectId for the user
       const userId = new Types.ObjectId();
 
+      // creating a new User instance with the provided data
       const newUser = new User({
         _id: userId,
         name,
@@ -43,15 +46,18 @@ class UserService {
 
       const { email, password } = data;
 
+      // finding the user with the provided email and password
       const user = await User.findOne({ email, password });
 
       if (!user) {
+        // if user not found, reject the promise with a custom HTTP error
         logger.error(`User not found`);
         return Promise.reject(new CustomHttpError(HTTP_CODES.BAD_REQUEST, ERRORS.BAD_REQUEST_ERROR, 'Invalid credentials'));
       }
 
       const userId = user.id;
 
+      // generating an access token for the logged-in user with the userId, username, and user role as data for the payload
       const accessToken = await Utils.generateToken({ userId, email, role: user.role });
 
       logger.info(`User login successful ${JSON.stringify({ accessToken, user })}`);
@@ -64,6 +70,7 @@ class UserService {
     }
   }
 
+  // function to find a user by their userId, email, and role
   async findUserByIdAndEmailAndRole(userId: string, email: string, role: string): Promise<IUser> {
     try {
       const user = await User.findOne({ _id: userId, email, role });
@@ -80,6 +87,7 @@ class UserService {
     }
   }
 
+  // function to get a paginated list of users
   async getUsersAndCount(skip: number, limit: number): Promise<{ count: number, users: IUser[] }> {
     try {
       const [ count, users ] = await Promise.all([
