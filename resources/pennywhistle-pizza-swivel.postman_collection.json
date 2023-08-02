@@ -343,23 +343,21 @@
 		},
 		{
 			"name": "product-get-by-id",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"Chicken Pizza\",\r\n    \"sku\": \"chicken_pizza_small\",\r\n    \"size\": \"Small\",\r\n    \"price\": 2000\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
-					"raw": "http://localhost:4000/api/product/64c4e9575f1e20bcc08da37c",
+					"raw": "http://localhost:4000/api/product/64ca4dd85fbe85c2b804c634",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -368,7 +366,47 @@
 					"path": [
 						"api",
 						"product",
-						"64c4e9575f1e20bcc08da37c"
+						"64ca4dd85fbe85c2b804c634"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "product-get-all",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/api/product?skip=1&limit=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"product"
+					],
+					"query": [
+						{
+							"key": "skip",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "1"
+						}
 					]
 				}
 			},
@@ -377,11 +415,21 @@
 		{
 			"name": "product-update-by-id",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"Chicken Pizza Updated\",\r\n    \"sku\": \"chicken_pizza_small_updated\",\r\n    \"size\": \"Small\",\r\n    \"price\": 2000\r\n}",
+					"raw": "{\r\n    \"name\": \"Chicken Pizza Updated\",\r\n    \"sku\": \"chicken_pizza_small\",\r\n    \"size\": \"Small\",\r\n    \"price\": 2000\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -389,7 +437,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:4000/api/product/64c4eb3e402d3f82e6637308",
+					"raw": "http://localhost:4000/api/product/64ca4dd85fbe85c2b804c634",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -398,7 +446,7 @@
 					"path": [
 						"api",
 						"product",
-						"64c4eb3e402d3f82e6637308"
+						"64ca4dd85fbe85c2b804c634"
 					]
 				}
 			},
