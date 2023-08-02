@@ -93,7 +93,7 @@ const router = Router();
  *               type: object
  *               properties:
  *                 status:
- *                   type: string
+ *                   type: number
  *                 message:
  *                   type: string
  *                 data:
@@ -128,7 +128,7 @@ router.post('/', authenticator, authorizer([ UserRolesEnum.Customer ]), OrderCon
  *               type: object
  *               properties:
  *                 status:
- *                   type: string
+ *                   type: number
  *                 message:
  *                   type: string
  *                 data:
@@ -169,14 +169,19 @@ router.get('/:id', authenticator, authorizer([ UserRolesEnum.Customer ]), OrderC
  *               type: object
  *               properties:
  *                 status:
- *                   type: string
+ *                   type: number
  *                 message:
  *                   type: string
  *                 data:
- *                   type: array
- *                   items:
- *                     type: object
- *                     $ref: '#/definitions/Order'
+ *                   type: object
+ *                   properties:
+ *                     count:
+ *                       type: number
+ *                     orders:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         $ref: '#/definitions/Order'
  *                 error:
  *                   type: null
  */
@@ -212,14 +217,19 @@ router.get('/user/history', authenticator, authorizer([ UserRolesEnum.Customer ]
  *               type: object
  *               properties:
  *                 status:
- *                   type: string
+ *                   type: number
  *                 message:
  *                   type: string
  *                 data:
- *                   type: array
- *                   items:
- *                     type: object
- *                     $ref: '#/definitions/Order'
+ *                   type: object
+ *                   properties:
+ *                     count:
+ *                       type: number
+ *                     orders:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         $ref: '#/definitions/Order'
  *                 error:
  *                   type: null
  */
@@ -255,14 +265,19 @@ router.get('/staff-user/pending', authenticator, authorizer([ StaffUserRolesEnum
  *               type: object
  *               properties:
  *                 status:
- *                   type: string
+ *                   type: number
  *                 message:
  *                   type: string
  *                 data:
- *                   type: array
- *                   items:
- *                     type: object
- *                     $ref: '#/definitions/Order'
+ *                   type: object
+ *                   properties:
+ *                     count:
+ *                       type: number
+ *                     orders:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         $ref: '#/definitions/Order'
  *                 error:
  *                   type: null
  */
@@ -297,7 +312,7 @@ router.get('/staff-user/ready-to-deliver', authenticator, authorizer([ StaffUser
  *               type: object
  *               properties:
  *                 status:
- *                   type: string
+ *                   type: number
  *                 message:
  *                   type: string
  *                 data:

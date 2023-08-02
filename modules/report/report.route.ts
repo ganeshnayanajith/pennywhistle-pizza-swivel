@@ -43,14 +43,19 @@ const router = Router();
  *               type: object
  *               properties:
  *                 status:
- *                   type: string
+ *                   type: number
  *                 message:
  *                   type: string
  *                 data:
- *                   type: array
- *                   items:
- *                     type: object
- *                     $ref: '#/definitions/User'
+ *                   type: object
+ *                   properties:
+ *                     count:
+ *                       type: number
+ *                     users:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         $ref: '#/definitions/User'
  *                 error:
  *                   type: null
  */
@@ -92,14 +97,19 @@ router.get('/users', authenticator, authorizer([ StaffUserRolesEnum.Admin ]), Re
  *               type: object
  *               properties:
  *                 status:
- *                   type: string
+ *                   type: number
  *                 message:
  *                   type: string
  *                 data:
- *                   type: array
- *                   items:
- *                     type: object
- *                     $ref: '#/definitions/Order'
+ *                   type: object
+ *                   properties:
+ *                     count:
+ *                       type: number
+ *                     orders:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         $ref: '#/definitions/Order'
  *                 error:
  *                   type: null
  */
@@ -149,7 +159,7 @@ router.get('/user/orders', authenticator, authorizer([ StaffUserRolesEnum.Admin 
  *               type: object
  *               properties:
  *                 status:
- *                   type: string
+ *                   type: number
  *                 message:
  *                   type: string
  *                 data:
