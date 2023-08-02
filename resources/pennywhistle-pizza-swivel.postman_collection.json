@@ -686,7 +686,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:4000/api/report/users?skip=1&limit=1",
+					"raw": "http://localhost:4000/api/report/users?skip=0&limit=1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -700,7 +700,7 @@
 					"query": [
 						{
 							"key": "skip",
-							"value": "1"
+							"value": "0"
 						},
 						{
 							"key": "limit",
