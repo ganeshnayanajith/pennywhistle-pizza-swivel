@@ -6,6 +6,7 @@ import { HTTP_CODES, ERRORS } from '../../lib/constant';
 import Utils from '../../lib/utils';
 import ProductValidator from './product.validator';
 import { AuthRequest } from '../../lib/security/auth-request';
+import QueryValidator from '../../lib/validators/query.validator';
 
 class ProductController {
   async createProduct(req: AuthRequest, res: Response, next: NextFunction) {
@@ -26,6 +27,16 @@ class ProductController {
         throw new CustomHttpError(HTTP_CODES.NOT_FOUND, ERRORS.NOT_FOUND_ERROR, 'Product not found');
       }
       Utils.successResponse(res, HTTP_CODES.OK, 'Product data fetched successfully', result);
+    } catch (err) {
+      Utils.errorResponse(res, err);
+    }
+  }
+
+  async getProductsAndCount(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { skip, limit } = await QueryValidator.isValidSkipLimitTwenty(req.query);
+      const result = await ProductService.getProductsAndCount(skip, limit);
+      Utils.successResponse(res, HTTP_CODES.OK, 'Products data fetched successfully', result);
     } catch (err) {
       Utils.errorResponse(res, err);
     }

@@ -36,6 +36,26 @@ const router = Router();
  *         enum: [Small, Regular, Large]
  *       price:
  *         type: number
+ *   Product:
+ *     type: object
+ *     properties:
+ *       _id:
+ *         type: string
+ *       name:
+ *         type: string
+ *       sku:
+ *         type: string
+ *       size:
+ *         type: string
+ *         enum: ['Small', 'Regular', 'Large']
+ *       price:
+ *         type: number
+ *       createdAt:
+ *         type: string
+ *         format: date-time
+ *       updatedAt:
+ *         type: string
+ *         format: date-time
  */
 
 /**
@@ -65,7 +85,7 @@ const router = Router();
  *                   type: string
  *                 data:
  *                   type: object
- *                   $ref: '#/definitions/CreateProductDTO'
+ *                   $ref: '#/definitions/Product'
  *                 error:
  *                  type: null
  */
@@ -96,9 +116,46 @@ router.post('/', authenticator, authorizer([ StaffUserRolesEnum.Admin ]), Produc
  *               properties:
  *                 data:
  *                   type: object
- *                   $ref: '#/definitions/CreateProductDTO'
+ *                   $ref: '#/definitions/Product'
  */
 router.get('/:id', authenticator, authorizer([ StaffUserRolesEnum.Admin ]), ProductController.getProduct);
+
+/**
+ * @swagger
+ * /product:
+ *   get:
+ *     summary: Get all products
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: skip
+ *         required: false
+ *         description: No of records to skip
+ *         schema:
+ *           type: number
+ *       - in: query
+ *         name: limit
+ *         required: false
+ *         description: No of records to limit
+ *         schema:
+ *           type: number
+ *     responses:
+ *       200:
+ *         description: Products data fetched successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     $ref: '#/definitions/Product'
+ */
+router.get('/', authenticator, authorizer([ StaffUserRolesEnum.Admin ]), ProductController.getProductsAndCount);
 
 /**
  * @swagger
@@ -132,7 +189,7 @@ router.get('/:id', authenticator, authorizer([ StaffUserRolesEnum.Admin ]), Prod
  *                   type: string
  *                 data:
  *                   type: object
- *                   $ref: '#/definitions/UpdateProductDTO'
+ *                   $ref: '#/definitions/Product'
  */
 router.put('/:id', authenticator, authorizer([ StaffUserRolesEnum.Admin ]), ProductController.updateProduct);
 
@@ -163,7 +220,7 @@ router.put('/:id', authenticator, authorizer([ StaffUserRolesEnum.Admin ]), Prod
  *                   type: string
  *                 data:
  *                   type: object
- *                   $ref: '#/definitions/UpdateProductDTO'
+ *                   $ref: '#/definitions/Product'
  */
 router.delete('/:id', authenticator, authorizer([ StaffUserRolesEnum.Admin ]), ProductController.deleteProduct);
 

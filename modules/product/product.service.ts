@@ -33,6 +33,19 @@ class ProductService {
     }
   }
 
+  async getProductsAndCount(skip: number, limit: number): Promise<{ count: number, products: IProduct[] }> {
+    try {
+      const [ count, products ] = await Promise.all([
+        Product.countDocuments({}),
+        Product.find({}).sort({ createdAt: -1 }).skip(skip).limit(limit).exec(),
+      ]);
+      return Promise.resolve({ count, products });
+    } catch (error) {
+      logger.error(error);
+      return Promise.reject(error);
+    }
+  }
+
   async updateProduct(productId: string, productData: UpdateProductDTO): Promise<IProduct | null> {
     try {
       // updating the product in the database with the provided productData
