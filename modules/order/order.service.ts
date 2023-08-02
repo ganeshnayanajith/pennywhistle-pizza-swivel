@@ -22,15 +22,18 @@ class OrderService {
         const productId = item.productId;
         const quantity = item.quantity;
 
+        // retrieving the product details from the ProductService based on productId
         const product = await ProductService.getProduct(productId);
         if (!product) {
           return Promise.reject(new CustomHttpError(HTTP_CODES.NOT_FOUND, ERRORS.NOT_FOUND_ERROR, `Product with ID ${item.productId} not found`));
         }
 
+        // calculating total price and quantity for each unique order item (a product with any quantity)
         const itemTotalPrice = product.price * quantity;
         totalPrice += itemTotalPrice;
         totalItemQuantity += quantity;
 
+        // creating an OrderItem instance and adding it to the orderItemsArray
         const orderItem = new OrderItem({
           _id: new Types.ObjectId(),
           productId: new Types.ObjectId(productId),
@@ -65,6 +68,7 @@ class OrderService {
 
   async getOrderById(orderId: string, userId: string): Promise<IOrder | null> {
     try {
+      // finding the order in the database with the provided orderId and userId
       const order = await Order.findOne({ _id: orderId, userId }).exec();
       return Promise.resolve(order);
     } catch (error) {
@@ -80,6 +84,7 @@ class OrderService {
     try {
       const query = { userId };
 
+      // using Promise.all to fetch order count and orders in parallel with the provided userId
       const [ count, orders ] = await Promise.all([
         Order.countDocuments(query),
         Order.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit).exec(),
@@ -101,6 +106,7 @@ class OrderService {
 
       const query = { status };
 
+      // using Promise.all to fetch order count and orders in parallel with the provided status
       const [ count, orders ] = await Promise.all([
         Order.countDocuments(query),
         Order.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit).exec(),
@@ -122,6 +128,7 @@ class OrderService {
 
       const query = { status, type };
 
+      // using Promise.all to fetch order count and orders in parallel with the provided order status and type
       const [ count, orders ] = await Promise.all([
         Order.countDocuments(query),
         Order.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit).exec(),
@@ -137,15 +144,22 @@ class OrderService {
 
   async updateOrderStatus(orderId: string, status: OrderStatusEnum, role: StaffUserRolesEnum): Promise<IOrder> {
     try {
+      // finding the order in the database by orderId
       const order = await Order.findById(orderId).exec();
       if (!order) {
+        // if order not found, reject the promise with a custom HTTP error
         return Promise.reject(new CustomHttpError(HTTP_CODES.NOT_FOUND, ERRORS.NOT_FOUND_ERROR, 'Order not found'));
       }
 
+      // checking the role of the user making the status update
       if (role === StaffUserRolesEnum.Admin) {
+
         // Admin can update from any status to any status
         order.status = status;
+
       } else if (role === StaffUserRolesEnum.StoreStaff) {
+
+        // StoreStaff can update the status from Pending to Cancelled or from ReadyToPickUpFromStore to PickedUpFromStore
         if (order.status === OrderStatusEnum.Pending && status === OrderStatusEnum.Cancelled) {
           order.status = status;
         } else if (
@@ -154,9 +168,13 @@ class OrderService {
         ) {
           order.status = status;
         } else {
+          // if the status update is not valid, reject the promise with a custom HTTP error
           return Promise.reject(new CustomHttpError(HTTP_CODES.FORBIDDEN, ERRORS.FORBIDDEN_ERROR, 'Invalid status update'));
         }
+
       } else if (role === StaffUserRolesEnum.KitchenStaff) {
+
+        // KitchenStaff can update the status from Pending to Preparing or from Preparing to ReadyToPickUpFromStore/ReadyToDeliverToHome according to the order type
         if (order.status === OrderStatusEnum.Pending && status === OrderStatusEnum.Preparing) {
           order.status = status;
         } else if (
@@ -174,7 +192,10 @@ class OrderService {
         } else {
           return Promise.reject(new CustomHttpError(HTTP_CODES.FORBIDDEN, ERRORS.FORBIDDEN_ERROR, 'Invalid status update'));
         }
+
       } else if (role === StaffUserRolesEnum.DeliveryStaff) {
+
+        // DeliveryStaff can update the status from ReadyToDeliverToHome to Delivered
         if (
           order.status === OrderStatusEnum.ReadyToDeliverToHome &&
           status === OrderStatusEnum.Delivered
@@ -202,6 +223,7 @@ class OrderService {
     try {
       const query: any = {};
 
+      // if date is provided, filter orders based on the given date
       if (date) {
         const startDate = new Date(date);
         const endDate = new Date(date);
@@ -214,6 +236,7 @@ class OrderService {
       }
 
       if (status) {
+        // if status is provided, filter orders based on the given status
         query.status = status;
       }
 
