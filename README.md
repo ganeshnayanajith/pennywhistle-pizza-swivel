@@ -7,3 +7,4 @@
 - npm run build
 - npm run seed
 - npm run start
+- npm run test:<module_name>
