@@ -14,15 +14,18 @@ class StaffUserService {
 
       const { username, password } = data;
 
+      // finding the staff user with the provided username and password
       const user = await StaffUser.findOne({ username, password });
 
       if (!user) {
+        // if user not found, reject the promise with a custom HTTP error
         logger.error(`Staff user not found`);
         return Promise.reject(new CustomHttpError(HTTP_CODES.BAD_REQUEST, ERRORS.BAD_REQUEST_ERROR, 'Invalid credentials'));
       }
 
       const userId = user.id;
 
+      // generating an access token for the logged-in staff user with the userId, username, and user role as data for the payload
       const accessToken = await Utils.generateToken({ userId, username, role: user.role });
 
       logger.info(`Staff user login successful ${JSON.stringify({ accessToken, user })}`);
@@ -35,6 +38,7 @@ class StaffUserService {
     }
   }
 
+  // function to find a staff user by their userId, username, and role
   async findUserByIdAndUsernameAndRole(userId: string, username: string, role: string): Promise<IStaffUser> {
     try {
       const user = await StaffUser.findOne({ _id: userId, username, role });
