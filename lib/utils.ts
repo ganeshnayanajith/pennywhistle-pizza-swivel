@@ -1,30 +1,54 @@
 import { Response } from 'express';
-import { ERRORS, MESSAGES, HTTP_CODES } from './constant';
+import { ERRORS, MESSAGES, HTTP_CODES, SALT_ROUNDS } from './constant';
 import logger from './logger';
 import jwt from 'jsonwebtoken';
 import secretConfigs from '../secret-configs';
+import bcrypt from 'bcrypt';
+import CustomHttpError from './custom-http-error';
 
 class Utils {
+  static async hashPassword(password: string): Promise<string> {
+    try {
+      const salt = await bcrypt.genSalt(SALT_ROUNDS);
+      const hashedPassword = await bcrypt.hash(password, salt);
+      return Promise.resolve(hashedPassword);
+    } catch (error) {
+      return Promise.reject(new CustomHttpError(HTTP_CODES.SERVER_ERROR, ERRORS.SERVER_ERROR, 'Error hashing password'));
+    }
+  }
+
+  static async comparePasswords(
+    password: string,
+    hashedPassword: string,
+  ): Promise<boolean> {
+    try {
+      const result = await bcrypt.compare(password, hashedPassword);
+      return Promise.resolve(result);
+    } catch (error) {
+      return Promise.reject(new CustomHttpError(HTTP_CODES.SERVER_ERROR, ERRORS.SERVER_ERROR, 'Error comparing passwords'));
+    }
+  }
+
   static async generateToken(data: any): Promise<string> {
     try {
       const opts: jwt.SignOptions = {
         expiresIn: '1d',
       };
       const token: string = jwt.sign(data, secretConfigs.JWT_SECRET, opts);
-      return token;
+      return Promise.resolve(token);
     } catch (error) {
       logger.error(error);
-      throw error;
+      return Promise.reject(error);
     }
   }
 
   static async decodeToken(token: string): Promise<any> {
     try {
       const payload: any = await jwt.verify(token, secretConfigs.JWT_SECRET);
-      return payload;
+      return Promise.resolve(payload);
     } catch (error) {
       logger.error(error);
-      throw error;
+      return Promise.reject(error);
     }
   }
 

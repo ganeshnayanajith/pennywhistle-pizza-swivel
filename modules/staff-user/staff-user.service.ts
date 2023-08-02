@@ -14,16 +14,24 @@ class StaffUserService {
 
       const { username, password } = data;
 
-      // finding the staff user with the provided username and password
-      const user = await StaffUser.findOne({ username, password });
+      // finding the staff user with the provided username
+      const user = await StaffUser.findOne({ username });
 
       if (!user) {
         // if user not found, reject the promise with a custom HTTP error
-        logger.error(`Staff user not found`);
+        logger.error(`Staff user not found with username: ${username}`);
         return Promise.reject(new CustomHttpError(HTTP_CODES.BAD_REQUEST, ERRORS.BAD_REQUEST_ERROR, 'Invalid credentials'));
       }
 
       const userId = user.id;
+
+      // check the password correctness for the username
+      const isPasswordCorrect = await Utils.comparePasswords(password, user.password);
+
+      if (!isPasswordCorrect) {
+        logger.error(`Incorrect password for userId: ${userId}`);
+        return Promise.reject(new CustomHttpError(HTTP_CODES.BAD_REQUEST, ERRORS.BAD_REQUEST_ERROR, 'Invalid credentials'));
+      }
 
       // generating an access token for the logged-in staff user with the userId, username, and user role as data for the payload
       const accessToken = await Utils.generateToken({ userId, username, role: user.role });
@@ -58,10 +66,18 @@ class StaffUserService {
   async create(data: CreateStaffUserDTO) {
     try {
       const { username, password, role } = data;
+
       const userId = new Types.ObjectId();
-      const newStaffUser = new StaffUser({ _id: userId, username, password, role });
+
+      // hash the password before storing it in the database
+      const hashedPassword = await Utils.hashPassword(password);
+
+      const newStaffUser = new StaffUser({ _id: userId, username, password: hashedPassword, role });
+
       await newStaffUser.save();
+
       return Promise.resolve({ userId });
+
     } catch (error) {
       logger.error(error);
       return Promise.reject(error);

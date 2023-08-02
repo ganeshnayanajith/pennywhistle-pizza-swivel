@@ -27,3 +27,5 @@ export const ERRORS = {
 export const MESSAGES = {
   SOMETHING_WENT_WRONG: 'Something went wrong',
 };
+
+export const SALT_ROUNDS = 10;

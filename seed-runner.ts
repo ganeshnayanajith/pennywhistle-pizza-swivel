@@ -9,17 +9,20 @@ import { connectDB, disconnectDB } from './lib/database';
 import { StaffUserRolesEnum } from './lib/enum';
 import logger from './lib/logger';
 import { Types } from 'mongoose';
+import Utils from './lib/utils';
 
 async function seedData() {
   try {
     // establishing the database connection
     await connectDB();
 
+    const hashedPassword = await Utils.hashPassword('admin123');
+
     // creating a new StaffUser with the role of Admin
     const newUser = new StaffUser({
       _id: new Types.ObjectId(),
       username: 'Admin',
-      password: 'admin123',
+      password: hashedPassword,
       role: StaffUserRolesEnum.Admin,
     });
 

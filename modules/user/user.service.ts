@@ -21,13 +21,16 @@ class UserService {
       // generating a new unique ObjectId for the user
       const userId = new Types.ObjectId();
 
+      // hash the password before storing it in the database
+      const hashedPassword = await Utils.hashPassword(password);
+
       // creating a new User instance with the provided data
       const newUser = new User({
         _id: userId,
         name,
         email,
         mobileNumber,
-        password,
+        password: hashedPassword,
         role: UserRolesEnum.Customer,
       });
 
@@ -46,16 +49,24 @@ class UserService {
 
       const { email, password } = data;
 
-      // finding the user with the provided email and password
-      const user = await User.findOne({ email, password });
+      // finding the user with the provided email
+      const user = await User.findOne({ email });
 
       if (!user) {
         // if user not found, reject the promise with a custom HTTP error
-        logger.error(`User not found`);
+        logger.error(`User not found with email: ${email}`);
         return Promise.reject(new CustomHttpError(HTTP_CODES.BAD_REQUEST, ERRORS.BAD_REQUEST_ERROR, 'Invalid credentials'));
       }
 
       const userId = user.id;
+
+      // check the password correctness for the email
+      const isPasswordCorrect = await Utils.comparePasswords(password, user.password);
+
+      if (!isPasswordCorrect) {
+        logger.error(`Incorrect password for userId: ${userId}`);
+        return Promise.reject(new CustomHttpError(HTTP_CODES.BAD_REQUEST, ERRORS.BAD_REQUEST_ERROR, 'Invalid credentials'));
+      }
 
       // generating an access token for the logged-in user with the userId, username, and user role as data for the payload
       const accessToken = await Utils.generateToken({ userId, email, role: user.role });
