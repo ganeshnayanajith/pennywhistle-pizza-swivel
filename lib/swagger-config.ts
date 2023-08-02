@@ -11,8 +11,10 @@ const options = {
     },
     servers: [
       {
-        hostUrl: 'https://pennywhistle-pizza-swivel-api.onrender.com/api',
-        localUrl: 'http://localhost:4000/api',
+        url: 'https://pennywhistle-pizza-swivel-api.onrender.com/api',
+      },
+      {
+        url: 'http://localhost:4000/api',
       },
     ],
     components: {
