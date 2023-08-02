@@ -7,7 +7,8 @@
     "seed": "ts-node seed-runner.ts",
     "start": "node dist/bin/www.js | npx pino-pretty",
     "start:dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/bin/www.js\"",
-    "test:user": "mocha --require ts-node/register test/user.spec.ts"
+    "test:user": "mocha --require ts-node/register test/user.spec.ts",
+    "test:staff-user": "mocha --require ts-node/register test/staff-user.spec.ts"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
